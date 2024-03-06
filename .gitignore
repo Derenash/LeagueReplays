@@ -7,4 +7,8 @@ replays/*
 #data
 data/*
 
-.vscode/
+#info
+info/*
+
+#vscode
+.vscode/*
