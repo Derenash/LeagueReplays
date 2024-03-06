@@ -8,7 +8,9 @@ replays/*
 data/*
 
 #info
-info/*
+info/players.json
 
 #vscode
 .vscode/*
+
+summary.json

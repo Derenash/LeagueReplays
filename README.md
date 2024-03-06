@@ -15,7 +15,6 @@ Before running the application, ensure you have the following:
 
 - Python 3.6 or above installed
 - Flask installed (`pip install flask`)
-- Any other dependencies or setup requirements (include them here if applicable)
 
 ## Installation
 
