@@ -1,7 +1,7 @@
 import json
 import os
 import statistics
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 
 def extract_json_from_rofl(file_name):
   with open(file_name, 'rb') as file:
@@ -62,21 +62,27 @@ def process_json(json_data):
 
 def simplify_json(participants):
   simplified_data_map = {}
-
   with open('./info/players.json', 'r') as file:
     players = json.load(file)
+
+  ignore_players = set()
+  for player, data in players.items():
+    for combination in data['combinationToIgnore']:
+      if all(any(participant.get('SKIN', '') == champion for participant in participants) for champion in combination.values()):
+        ignore_players.add(player)
+        break
 
   for participant in participants:
     name = participant.get('NAME', '')
     player = None
     for key, value in players.items():
-      if name in value:
+      if name in value['aliases']:
         player = key
         break
-    
-    if player:
+
+    if player and player not in ignore_players:
       simplified_data = {}
-      
+
       time_played = int(participant.get('TIME_PLAYED', 1))
       minions_killed = int(participant.get('MINIONS_KILLED', 0))
       neutral_minions_killed = int(participant.get('NEUTRAL_MINIONS_KILLED', 0))
@@ -88,9 +94,9 @@ def simplify_json(participants):
       kp_percentage = (int(participant.get('CHAMPIONS_KILLED', 0)) + int(participant.get('ASSISTS', 0))) / max(int(participant.get('CHAMPIONS_KILLED', 0)) + int(participant.get('NUM_DEATHS', 0)) + int(participant.get('ASSISTS', 0)), 1) * 100
       simplified_data['KP%'] = round(kp_percentage, 2)
       simplified_data['visionScore'] = int(participant.get('VISION_SCORE', 0))
-      
+
       simplified_data_map[player] = simplified_data
-      
+
   return simplified_data_map
 
 def process_json_files(json_folder):
