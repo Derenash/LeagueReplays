@@ -39,7 +39,8 @@ To use the League Replay Stats Analyzer, follow these steps:
      {
        "John": [
          "JohnMainAccount",
-         "JohnFakeAccount"
+         "JohnFakeAccount",
+         "JohnThirdAccount"
        ],
        "James": [
          "Darksider23"
