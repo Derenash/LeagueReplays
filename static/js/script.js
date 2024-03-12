@@ -6,6 +6,7 @@ function createTableRows(data) {
     const row = document.createElement('tr');
     row.innerHTML = `
       <td class="player">${player.name}</td>
+      <td>${player.total_games}</td>
       <td>${player.stats.avg_CSPM.toFixed(2)}<div class="bar" style="width: ${(player.stats.avg_CSPM / maxValues.CSPM) * 100}%"></div></td>
       <td>${player.stats.avg_GDPM.toFixed(2)}<div class="bar" style="width: ${(player.stats.avg_GDPM / maxValues.GDPM) * 100}%"></div></td>
       <td>${player.stats.avg_DPM.toFixed(2)}<div class="bar" style="width: ${(player.stats.avg_DPM / maxValues.DPM) * 100}%"></div></td>

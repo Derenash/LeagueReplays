@@ -27,7 +27,7 @@ def extract_json_from_rofl(file_name):
         json_object = json.loads(json_str)
         return json_object
       except json.JSONDecodeError as e:
-        print(f"Error decoding JSON: {e}")
+        print(f"Error decoding file: {file_name}")
     return None
 
 def save_json(data, file_path):
@@ -38,10 +38,15 @@ def save_json(data, file_path):
 def process_replays(replays_folder, json_folder):
   if not os.path.exists(json_folder):
     os.makedirs(json_folder)
+
   for file_name in os.listdir(replays_folder):
     if file_name.endswith(".rofl"):
       file_path = os.path.join(replays_folder, file_name)
       json_data = extract_json_from_rofl(file_path)
+
+      if json_data is None:
+        continue
+
       json_data = process_json(json_data)
       if json_data:
         json_file_name = os.path.splitext(file_name)[0] + ".json"
@@ -124,7 +129,7 @@ def process_json_files(json_folder):
           player_data[player]['KP%'].append(stats['KP%'])
           player_data[player]['visionScore'].append(stats['visionScore'])
 
-    return player_data
+  return player_data
 
 def generate_summary(player_data):
   summary = {
