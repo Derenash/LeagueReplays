@@ -77,6 +77,14 @@ def simplify_json(participants):
         ignore_players.add(player)
         break
 
+  #Construct total kills of player team
+  team_kills = {}
+  for participant in participants:
+    team = participant.get('TEAM', '')
+    if team not in team_kills:
+      team_kills[team] = 0
+    team_kills[team] += int(participant.get('CHAMPIONS_KILLED', 0))
+
   for participant in participants:
     name = participant.get('NAME', '')
     player = None
@@ -96,8 +104,8 @@ def simplify_json(participants):
       simplified_data['DPM'] = round(int(participant.get('TOTAL_DAMAGE_DEALT_TO_CHAMPIONS', 0)) / (time_played / 60), 2)
       kda_ratio = (int(participant.get('CHAMPIONS_KILLED', 0)) + int(participant.get('ASSISTS', 0))) / max(int(participant.get('NUM_DEATHS', 1)), 1)
       simplified_data['KDA'] = round(kda_ratio, 2)
-      kp_percentage = (int(participant.get('CHAMPIONS_KILLED', 0)) + int(participant.get('ASSISTS', 0))) / max(int(participant.get('CHAMPIONS_KILLED', 0)) + int(participant.get('NUM_DEATHS', 0)) + int(participant.get('ASSISTS', 0)), 1) * 100
-      simplified_data['KP%'] = round(kp_percentage, 2)
+      kp_percentage = (int(participant.get('CHAMPIONS_KILLED', 0)) + int(participant.get('ASSISTS', 0))) / team_kills[participant.get('TEAM', '')]
+      simplified_data['KP%'] = round(kp_percentage, 2) * 100
       simplified_data['visionScore'] = int(participant.get('VISION_SCORE', 0))
 
       simplified_data_map[player] = simplified_data
