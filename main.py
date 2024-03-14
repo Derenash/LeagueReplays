@@ -77,7 +77,7 @@ def simplify_json(participants):
         ignore_players.add(player)
         break
 
-  #Construct total kills of player team
+  # Construct total kills of player team
   team_kills = {}
   for participant in participants:
     team = participant.get('TEAM', '')
@@ -87,6 +87,7 @@ def simplify_json(participants):
 
   for participant in participants:
     name = participant.get('NAME', '')
+    print(name)
     player = None
     for key, value in players.items():
       if name in value['aliases']:
